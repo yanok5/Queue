@@ -1,54 +1,56 @@
-#include "utstack.h"
+#include "queue.h"
 
 #include <gtest.h>
 
-TEST(Stack, can_create_stack)
+TEST(Queue, can_create_queue_with_positive_length)
 {
-	ASSERT_NO_THROW(Stack<int> s);
+	ASSERT_NO_THROW(Queue<int> q(5));
 }
 
-TEST(Stack, cant_create_too_large_stack)
+TEST(Queue, cant_create_too_large_queue)
 {
-	ASSERT_ANY_THROW(Stack<int> s(MAX_STACK_SIZE + 1));
+	ASSERT_ANY_THROW(Queue<int> q(MAX_VECTOR_SIZE + 1));
 }
 
-TEST(Stack, can_create_stack_with_positive_length)
+TEST(Queue, throws_when_create_queue_with_negative_length)
 {
-	ASSERT_NO_THROW(Stack<int> s(10));
+	ASSERT_ANY_THROW(Queue<int> q(-1));
 }
 
-TEST(Stack, cant_create_stack_with_negative_length)
+TEST(Queue, can_push) 
 {
-	ASSERT_ANY_THROW(Stack<int> s(-1));
+	Queue<int> q(2);
+	ASSERT_NO_THROW(q.push(1));
 }
 
-TEST(Stack, cant_create_stack_with_very_big_length)
+TEST(Queue, can_pop)
 {
-	ASSERT_ANY_THROW(Stack<int> s(1001));
+	Queue<int> q(5);
+	q.push(1);
+	ASSERT_NO_THROW(q.pop());
 }
 
-TEST(Stack, can_push)
+TEST(Queue, return_true_when_queue_is_empty)
 {
-	Stack<int> s(2);
-	ASSERT_NO_THROW(s.Push(1));
+	Queue<int> q;
+	EXPECT_EQ(true, q.empty());
 }
 
-TEST(Stack, can_pop)
+TEST(Queue, return_false_when_queue_isnt_empty) 
 {
-	Stack<int> s;
-	ASSERT_ANY_THROW(s.Pop());
+	Queue<int> q(1);
+	EXPECT_EQ(false, q.empty());
 }
 
-TEST(Stack, throws_when_free)
+TEST(Queue, return_true_when_queue_is_full) 
 {
-	Stack<int> s(2);
-	ASSERT_ANY_THROW(s.Pop());
+	Queue<int> q;
+	EXPECT_EQ(true, q.full());
 }
 
-TEST(Stack, can_get_top) 
+TEST(Queue, return_false_when_queue_isnt_full) 
 {
-	Stack<int> s(3);
-	s.Push(1);
-	ASSERT_NO_THROW(s.Top());
+	Queue<int> q(10);
+	q.push(1);
+	EXPECT_EQ(false, q.full());
 }
-/*---------------------------------------------------------------------------------------------------------*/

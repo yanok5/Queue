@@ -13,13 +13,25 @@ class Queue : public Vector<T>
 private:
 	unsigned int front;
 	unsigned int back;
-	void push_back(T elem) {}
-	void pop_back() {}
-	void push_front(T elem) {}
-	void pop_front() {}
-	void resize(int n) {}
-	void insert(T elem, int index) {}
-	void erase(int index) {}
+	void resize(int n)
+	{
+		T* temp = new T[n];
+		if (front < back)
+		{
+			for (size_t i = front; i <= back; i++)
+				temp[i-front] = data[i];
+		}
+		else
+		{
+			for (size_t i = front; i < size; i++)
+				temp[i-front] = data[i];
+			for (size_t i = 0; i <= back; i++)
+				temp[i+size-front] = data[i];
+		}
+		if (data)
+			delete[]data;
+		data = temp;
+	}
 public:
 	Queue() : Vector() { front = 0; back = 0; }
 	Queue(int n) : Vector(n) 
@@ -32,11 +44,11 @@ public:
 
 	void push(T elem) 
 	{
+		if (full())
+			resize(size_t(2.0 * capacity));
 		back++;
 		if (back == capacity)
 			back = 0;
-		if (full())
-			resize(size_t(2.0 * capacity));
 		data[back] = elem;
 		size++;
 	}
